@@ -1,20 +1,41 @@
 import dotenv from 'dotenv';
-const envFile = `./env-files/.env.${process.env.TEST_ENV || 'qa'}`;
-const result = dotenv.config({
-  path: envFile
-});
+import path from 'path';
+import fs from 'fs';
 
-if (result.error) {
-  throw new Error(`Unable to load environment file: ${envFile}`);
+const testEnv = (process.env.TEST_ENV || 'qa').toLowerCase();
+
+if (!['dev', 'qa', 'uat'].includes(testEnv)) {
+  throw new Error(
+    `Invalid TEST_ENV: ${testEnv}. Use dev, qa, or uat.`
+  );
+}
+
+const envFile = path.resolve(
+  process.cwd(),
+  'env-files',
+  `.env.${testEnv}`
+);
+
+// Load the local environment file if it exists.
+// In GitHub Actions, environment variables can come from Secrets.
+if (fs.existsSync(envFile)) {
+  const result = dotenv.config({ path: envFile });
+
+  if (result.error) {
+    throw new Error(`Unable to load environment file: ${envFile}`);
+  }
 }
 
 function getEnv(name: string): string {
   const value = process.env[name];
+
   if (!value) {
     throw new Error(
-      `Missing environment variable: ${name} in ${envFile}`
+      `Missing environment variable: ${name}. ` +
+      `Check your local env file or GitHub Secrets.`
     );
   }
+
   return value;
 }
 
