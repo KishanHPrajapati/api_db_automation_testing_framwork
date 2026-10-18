@@ -43,4 +43,5 @@ export const env = {
   baseUrl: getEnv('BASE_URL'),
   username: getEnv('AUTH_USERNAME'),
   password: getEnv('AUTH_PASSWORD'),
-};
+};   
+
