@@ -3,7 +3,8 @@ import { getUserData } from '../../database/user-queries';
 
 test('validate user from database', async () => {
     const result = await getUserData(
-        ['kishanprajapati8767@gmail.com',
+        [
+         'kishanprajapati8767@gmail.com',
          'Kishan Prajapati', 
          '7738569552'
         ]
