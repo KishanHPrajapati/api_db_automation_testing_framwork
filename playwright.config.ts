@@ -1,5 +1,5 @@
 import { defineConfig, devices } from '@playwright/test';
-import { env } from "../opencart_demo/config/env";
+import { env } from "./config/env";
 
 /**
  * See https://playwright.dev/docs/test-configuration.
